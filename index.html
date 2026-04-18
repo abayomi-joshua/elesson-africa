@@ -647,9 +647,10 @@ async function doSetup() {
   })
   setLoad('sp-btn', false)
   if (error) return showErr('setup-error', error.message)
-  await fetchProfile()
-  await fetchPurchases()
-  goTo('home')
+ await fetchProfile()
+await fetchPurchases()
+allCourses = []
+goTo('home')
 }
 
 // ══════════════════════════════════════════════
@@ -681,13 +682,20 @@ function filterHome() {
 async function fetchUserCourses() {
   if (allCourses.length) return allCourses.filter(c =>
     (!profile?.school      || c.school      === profile.school) &&
-    (!profile?.department  || c.department  === profile.department)
+    (!profile?.department  || c.department  === profile.department) &&
+    (!profile?.level       || c.level       === profile.level)
   )
+
   let q = sb.from('courses').select('*').order('title')
+
   if (profile?.school)     q = q.eq('school', profile.school)
   if (profile?.department) q = q.eq('department', profile.department)
+  if (profile?.level)      q = q.eq('level', profile.level)
+
   const { data, error } = await q
+
   if (error) console.error('Fetch courses error:', error)
+
   return data || []
 }
 
@@ -695,12 +703,8 @@ async function fetchUserCourses() {
 // COURSES PAGE
 // ══════════════════════════════════════════════
 async function loadCoursesPage() {
-  if (!allCourses.length) {
-    // Fetch all courses regardless of profile filter
-    const { data, error } = await sb.from('courses').select('*').order('school').order('title')
-    if (error) { console.error(error); }
-    allCourses = data || []
-  }
+  const data = await fetchUserCourses()
+  allCourses = data || []
   filterCourses()
 }
 
