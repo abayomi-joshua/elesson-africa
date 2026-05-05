@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+<title>eLesson Africa — Stop Reading. Start Understanding.</title>
+<meta name="theme-color" content="#0A0514"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="eLesson Africa"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0A0514;
+  --ink2:#150C2A;
+  --ink3:#1E1040;
+  --pu:#7C3AED;
+  --pu2:#9333EA;
+  --pu3:#A855F7;
+  --pk:#C026D3;
+  --pk2:#E879F9;
+  --white:#FFFFFF;
+  --off:#F5F0FF;
+  --muted:rgba(255,255,255,.45);
+  --border:rgba(168,85,247,.14);
+  --f:'Syne',sans-serif;
+  --b:'DM Sans',sans-serif;
+  --r:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--b);background:var(--ink);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ─── NOISE OVERLAY ─── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:0 5%;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,5,20,.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo img{
+  height:42px;width:auto;display:block;
+  filter:drop-shadow(0 0 12px rgba(192,38,211,.5));
+}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-ghost{
+  padding:9px 20px;border-radius:999px;
+  font-family:var(--f);font-weight:600;font-size:13px;letter-spacing:.01em;
+  background:transparent;color:rgba(255,255,255,.6);
+  border:1.5px solid rgba(168,85,247,.3);
+  text-decoration:none;transition:all .2s;cursor:pointer;
+}
+.btn-ghost:hover{color:#fff;border-color:var(--pu3)}
+.btn-solid{
+  padding:9px 22px;border-radius:999px;
+  font-family:var(--f);font-weight:700;font-size:13px;letter-spacing:.01em;
+  background:linear-gradient(135deg,var(--pu),var(--pk));
+  color:#fff;border:none;text-decoration:none;
+  transition:all .22s;cursor:pointer;
+  box-shadow:0 4px 18px rgba(192,38,211,.3);
+}
+.btn-solid:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(192,38,211,.48)}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;gap:60px;
+  padding:100px 7% 80px;
+  position:relative;overflow:hidden;
+  max-width:1300px;margin:0 auto;
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 70% at 70% 50%,rgba(124,58,237,.18) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(192,38,211,.1) 0%,transparent 55%);
+}
+.hero-left{position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px 5px 8px;border-radius:999px;
+  background:rgba(124,58,237,.15);border:1px solid rgba(168,85,247,.3);
+  font-family:var(--b);font-size:11px;font-weight:500;color:var(--pu3);
+  margin-bottom:28px;
+  animation:fadeUp .5s ease both;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--pu3);flex-shrink:0}
+.hero h1{
+  font-family:var(--f);font-size:clamp(2.8rem,5vw,4.2rem);
+  font-weight:800;line-height:1.05;letter-spacing:-.03em;
+  margin-bottom:22px;
+  animation:fadeUp .5s .07s ease both;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--pu3),var(--pk2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-sub{
+  font-size:1.05rem;color:var(--muted);line-height:1.75;
+  max-width:460px;margin-bottom:36px;
+  animation:fadeUp .5s .14s ease both;
+}
+.hero-sub strong{color:rgba(255,255,255,.85);font-weight:500}
+.hero-btns{
+  display:flex;gap:12px;flex-wrap:wrap;
+  animation:fadeUp .5s .21s ease both;
+}
+.btn-hero-p{
+  padding:14px 30px;border-radius:999px;
+  font-family:var(--f);font-weight:700;font-size:15px;
+  background:linear-gradient(135deg,var(--pu),var(--pk));
+  color:#fff;text-decoration:none;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 6px 28px rgba(192,38,211,.38);
+  transition:all .22s;
+}
+.btn-hero-p:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(192,38,211,.52)}
+.btn-hero-o{
+  padding:14px 28px;border-radius:999px;
+  font-family:var(--f);font-weight:600;font-size:15px;
+  background:transparent;color:rgba(255,255,255,.8);
+  border:1.5px solid rgba(168,85,247,.4);
+  text-decoration:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;
+}
+.btn-hero-o:hover{background:rgba(124,58,237,.15);border-color:var(--pu3);color:#fff}
+.hero-note{
+  margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.25);
+  font-family:var(--b);
+  animation:fadeUp .5s .28s ease both;
+}
+
+/* hero price pills */
+.price-pills{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;
+  animation:fadeUp .5s .32s ease both;
+}
+.price-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  font-family:var(--b);font-size:12px;color:rgba(255,255,255,.6);
+}
+.price-pill svg{color:var(--pu3)}
+
+/* ─── PHONE MOCKUP ─── */
+.hero-right{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;align-items:center;
+}
+.phone-outer{
+  position:relative;
+  animation:fadeUp .5s .1s ease both;
+}
+.phone-glow{
+  position:absolute;inset:-80px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(124,58,237,.22) 0%,transparent 65%);
+}
+.phone{
+  width:270px;position:relative;z-index:1;
+  background:linear-gradient(170deg,#2E1A6E,#120929);
+  border-radius:48px;padding:13px;
+  box-shadow:
+    0 50px 100px rgba(0,0,0,.75),
+    0 0 0 1px rgba(168,85,247,.2),
+    inset 0 1px 0 rgba(255,255,255,.1);
+  animation:phoneFloat 6s ease-in-out infinite;
+}
+.phone::before{
+  content:'';position:absolute;top:22px;left:50%;transform:translateX(-50%);
+  width:65px;height:5px;background:rgba(0,0,0,.7);border-radius:3px;z-index:10;
+}
+.pscreen{
+  background:#F5F0FF;border-radius:36px;overflow:hidden;
+  position:relative;height:500px;
+}
+.pslide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .6s ease,transform .6s ease;
+  pointer-events:none;
+}
+.pslide.active{opacity:1;transform:none;pointer-events:auto}
+
+/* slide 1 — home */
+.s1h{background:linear-gradient(160deg,#150930,#2D1B69);padding:20px 15px 18px;color:#fff}
+.s1top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.s1greet{font-family:var(--b);font-size:9.5px;opacity:.55}
+.s1name{font-family:var(--f);font-size:14px;font-weight:700}
+.s1uni{font-family:var(--b);font-size:7.5px;opacity:.38;margin-top:1px}
+.s1av{width:30px;height:30px;background:linear-gradient(135deg,#7C3AED,#C026D3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-weight:700;font-size:11px;flex-shrink:0}
+.s1search{background:rgba(255,255,255,.1);border-radius:9px;padding:7px 10px;font-size:9px;color:rgba(255,255,255,.35);font-family:var(--b);display:flex;align-items:center;gap:5px}
+.s1body{padding:12px 12px 0;background:#F5F0FF;flex:1;overflow:hidden}
+.s1sec{font-family:var(--f);font-size:10.5px;font-weight:700;color:#1E1B4B;display:flex;justify-content:space-between;margin-bottom:8px}
+.s1va{font-size:8.5px;color:var(--pu);font-weight:600}
+.crow{background:#fff;border-radius:11px;padding:9px 10px;display:flex;align-items:center;gap:8px;margin-bottom:6px;box-shadow:0 1px 5px rgba(107,33,168,.07)}
+.cbadge{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#7C3AED,#C026D3);display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:7px;font-weight:700;color:#fff;text-align:center;line-height:1.1;flex-shrink:0}
+.cname{font-family:var(--f);font-size:9px;font-weight:700;color:#1E1B4B}
+.cmeta{font-size:7px;color:#9CA3AF;margin-top:1px}
+.carr{margin-left:auto;color:#C4B5FD;font-size:12px}
+
+/* slide 2 — course detail */
+.s2h{background:linear-gradient(160deg,#150930,#2D1B69);padding:13px 13px 14px;color:#fff}
+.s2back{font-family:var(--f);font-size:9.5px;font-weight:600;opacity:.7;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+.s2badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7C3AED,#C026D3);display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:8px;font-weight:700;color:#fff;text-align:center;line-height:1.2;margin-bottom:7px}
+.s2title{font-family:var(--f);font-size:13px;font-weight:800;margin-bottom:5px}
+.s2chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px}
+.chip{font-family:var(--b);font-size:7px;font-weight:500;color:rgba(255,255,255,.6);background:rgba(255,255,255,.1);border-radius:999px;padding:2px 6px}
+.s2desc{font-size:7.5px;color:rgba(255,255,255,.42)}
+.s2body{padding:9px 11px;background:#F5F0FF;flex:1;overflow:hidden}
+.s2buy{background:#fff;border-radius:10px;padding:8px 10px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 5px rgba(107,33,168,.07)}
+.s2bt{font-family:var(--f);font-size:8.5px;font-weight:700;color:#1E1B4B}
+.s2bs{font-size:7px;color:#9CA3AF;margin-top:1px}
+.s2price{background:linear-gradient(135deg,#7C3AED,#C026D3);color:#fff;font-family:var(--f);font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:999px}
+.s2tt{font-family:var(--f);font-size:9.5px;font-weight:700;color:#1E1B4B;margin-bottom:6px;display:flex;justify-content:space-between}
+.trow{background:#fff;border-radius:9px;padding:8px 9px;display:flex;align-items:center;gap:7px;margin-bottom:5px;box-shadow:0 1px 4px rgba(107,33,168,.06)}
+.tnum{width:18px;height:18px;border-radius:5px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:7px;font-weight:700;color:#7C3AED;flex-shrink:0}
+.tname{font-family:var(--f);font-size:8.5px;font-weight:600;color:#1E1B4B;flex:1}
+.tbuy{font-family:var(--b);font-size:7px;font-weight:600;color:#fff;background:linear-gradient(135deg,#F59E0B,#D97706);padding:2px 6px;border-radius:999px}
+.tfree{font-family:var(--b);font-size:7px;font-weight:600;color:#fff;background:linear-gradient(135deg,#10B981,#059669);padding:2px 6px;border-radius:999px}
+
+/* slide 3 — reader */
+.s3h{background:#fff;padding:10px 12px 9px;border-bottom:1px solid #EDE9FE;display:flex;align-items:center;gap:7px}
+.s3back{color:#7C3AED;font-size:11px;font-weight:700;font-family:var(--f)}
+.s3title{font-family:var(--f);font-size:9.5px;font-weight:700;color:#1E1B4B;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s3body{flex:1;background:#F5F0FF;padding:11px 12px;overflow:hidden;display:flex;flex-direction:column;gap:7px}
+.s3topic{font-family:var(--f);font-size:10.5px;font-weight:800;color:#1E1B4B;margin-bottom:1px}
+.s3chips{display:flex;gap:3px;margin-bottom:5px}
+.s3chip{font-family:var(--b);font-size:6.5px;font-weight:500;background:#EDE9FE;color:#7C3AED;padding:2px 6px;border-radius:999px}
+.s3card{background:#fff;border-radius:9px;padding:9px 10px;box-shadow:0 1px 4px rgba(107,33,168,.06)}
+.s3sh{font-family:var(--f);font-size:8.5px;font-weight:700;color:#1E1B4B;margin-bottom:5px}
+.line{height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px}
+.s3pdf{background:#fff;border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:7px;box-shadow:0 1px 4px rgba(107,33,168,.06)}
+.s3pdficon{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#EF4444,#DC2626);display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:6.5px;font-weight:700;color:#fff;flex-shrink:0}
+.s3pdfname{font-family:var(--f);font-size:8px;font-weight:600;color:#1E1B4B}
+.s3pdfmeta{font-size:7px;color:#9CA3AF;margin-top:1px}
+.s3open{margin-left:auto;font-family:var(--f);font-size:6.5px;font-weight:700;color:#7C3AED;background:#EDE9FE;padding:2.5px 7px;border-radius:999px}
+.s3nav{background:#fff;padding:7px 14px;display:flex;justify-content:space-around;border-top:1px solid #EDE9FE}
+.s3ni{display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--b);font-size:6.5px;color:#9CA3AF}
+.s3ni.on{color:#7C3AED}
+
+/* slide 4 — splash */
+.s4wrap{flex:1;background:linear-gradient(170deg,#120620,#0A0514);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px}
+.s4logo{width:72px;height:auto;margin-bottom:14px;filter:drop-shadow(0 0 14px rgba(192,38,211,.5))}
+.s4tag{font-family:var(--b);font-size:9px;color:rgba(255,255,255,.38);text-align:center;line-height:1.65;margin-bottom:22px}
+.s4p{width:100%;padding:10px;border-radius:999px;background:linear-gradient(135deg,#7C3AED,#C026D3);font-family:var(--f);font-weight:700;font-size:9.5px;color:#fff;text-align:center;margin-bottom:7px}
+.s4o{width:100%;padding:10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-family:var(--f);font-weight:600;font-size:9.5px;color:rgba(255,255,255,.6);text-align:center;margin-bottom:14px}
+.s4foot{font-size:7.5px;color:rgba(255,255,255,.2);font-family:var(--b)}
+
+/* dots */
+.pdots{display:flex;gap:5px;justify-content:center;margin-top:12px;position:relative;z-index:2}
+.pdot{width:5px;height:5px;border-radius:50%;background:rgba(168,85,247,.22);cursor:pointer;transition:all .3s}
+.pdot.on{background:var(--pu3);width:14px;border-radius:3px}
+
+/* ─── SECTION WRAPPER ─── */
+.section{padding:96px 7%}
+.sw{max-width:1200px;margin:0 auto}
+.lbl{font-family:var(--b);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pu3);margin-bottom:14px;display:block}
+.sh{font-family:var(--f);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-.025em;margin-bottom:14px}
+.sh em{font-style:italic;color:var(--pu3)}
+.ssub{color:var(--muted);font-size:1rem;line-height:1.74;max-width:500px}
+
+/* ─── PROBLEM SECTION ─── */
+.problem-sec{background:var(--ink2);border-top:1px solid var(--border)}
+.pcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;margin-top:52px;border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.pcard{
+  background:#0F0720;padding:32px 28px;
+  position:relative;transition:background .3s;
+}
+.pcard:hover{background:#180E2E}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(192,38,211,.4),transparent);opacity:0;transition:opacity .3s}
+.pcard:hover::before{opacity:1}
+.pcard-icon{width:38px;height:38px;border-radius:10px;background:rgba(124,58,237,.15);border:1px solid rgba(168,85,247,.2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--pu3)}
+.pcard h3{font-family:var(--f);font-size:1rem;font-weight:700;margin-bottom:8px;line-height:1.3;color:rgba(255,255,255,.9)}
+.pcard p{color:rgba(255,255,255,.42);font-size:.86rem;line-height:1.65}
+
+/* ─── FEATURES / HOW IT WORKS ─── */
+.how-sec{background:var(--ink)}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.feats{display:flex;flex-direction:column;gap:28px;margin-top:36px}
+.feat{display:flex;gap:14px;align-items:flex-start}
+.ficon{width:40px;height:40px;border-radius:11px;flex-shrink:0;background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.2);display:flex;align-items:center;justify-content:center;color:var(--pu3)}
+.ftext h4{font-family:var(--f);font-weight:700;font-size:.93rem;margin-bottom:4px;color:rgba(255,255,255,.9)}
+.ftext p{color:rgba(255,255,255,.44);font-size:.85rem;line-height:1.65}
+
+/* ─── UNIVERSITIES ─── */
+.uni-sec{background:var(--ink2);border-top:1px solid var(--border);text-align:center}
+.uni-sec .sh{margin:0 auto 10px}
+.uni-sec .ssub{margin:0 auto 40px}
+.uni-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:18px}
+.upill{
+  padding:10px 20px;border-radius:999px;
+  font-family:var(--f);font-size:13px;font-weight:600;
+  background:rgba(124,58,237,.1);border:1px solid rgba(168,85,247,.25);
+  color:rgba(255,255,255,.75);transition:all .2s;cursor:default;
+}
+.upill:hover{background:rgba(124,58,237,.2);border-color:var(--pu3);color:#fff}
+.upill.more{color:var(--pu3);border-color:rgba(168,85,247,.4)}
+.uni-note{font-size:.82rem;color:rgba(255,255,255,.25);font-family:var(--b)}
+
+/* ─── TESTIMONIALS ─── */
+.testi-sec{background:var(--ink);overflow:hidden}
+.testi-head{text-align:center;margin-bottom:52px}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto}
+.tcard{
+  background:var(--ink2);border-radius:20px;padding:28px;
+  border:1px solid var(--border);
+  transition:transform .25s,border-color .25s;
+}
+.tcard:hover{transform:translateY(-4px);border-color:rgba(168,85,247,.3)}
+.stars{display:flex;gap:3px;margin-bottom:18px}
+.star{color:#F59E0B}
+.tcard blockquote{
+  font-family:var(--b);font-size:.93rem;line-height:1.72;
+  color:rgba(255,255,255,.72);font-style:italic;margin-bottom:22px;
+}
+.tauthor{display:flex;align-items:center;gap:11px}
+.tavatar{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--pu),var(--pk));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f);font-weight:700;font-size:12px;color:#fff;
+}
+.tname{font-family:var(--f);font-weight:700;font-size:.88rem;color:rgba(255,255,255,.9)}
+.tmeta{font-size:.78rem;color:rgba(255,255,255,.35);margin-top:1px}
+
+/* ─── STATS ─── */
+.stats-sec{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px 7%}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;max-width:860px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.scard{background:#0F0720;padding:32px 20px;text-align:center}
+.snum{font-family:var(--f);font-size:2.4rem;font-weight:800;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--pu3),var(--pk2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.slabel{font-size:.78rem;color:rgba(255,255,255,.35);font-family:var(--b)}
+
+/* ─── CTA BANNER ─── */
+.cta-sec{
+  padding:110px 7%;text-align:center;background:var(--ink);
+  position:relative;overflow:hidden;
+}
+.cta-sec::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(124,58,237,.15) 0%,transparent 70%);
+}
+.cta-sec h2{
+  font-family:var(--f);font-size:clamp(2rem,4.5vw,3.2rem);
+  font-weight:800;line-height:1.08;letter-spacing:-.025em;
+  margin-bottom:14px;position:relative;
+}
+.cta-sec p{color:var(--muted);font-size:1rem;max-width:400px;margin:0 auto 36px;line-height:1.74;position:relative}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ─── FOOTER ─── */
+footer{background:#060210;border-top:1px solid var(--border);padding:50px 7% 32px}
+.ft-inner{max-width:1200px;margin:0 auto}
+.ft-top{display:flex;align-items:flex-start;justify-content:space-between;gap:48px;flex-wrap:wrap;margin-bottom:44px}
+.ft-brand img{height:42px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(192,38,211,.38));margin-bottom:10px}
+.ft-tagline{font-size:.83rem;color:rgba(255,255,255,.28);max-width:200px;line-height:1.65;margin-bottom:20px}
+.ft-socials{display:flex;gap:8px;flex-wrap:wrap}
+.soc{
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.16);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.38);text-decoration:none;transition:all .2s;
+}
+.soc:hover{background:rgba(124,58,237,.3);color:#fff;border-color:var(--pu3)}
+.ft-col h5{font-family:var(--f);font-weight:700;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:14px}
+.ft-col a{display:block;color:rgba(255,255,255,.38);font-size:.84rem;text-decoration:none;margin-bottom:9px;font-family:var(--b);transition:color .2s}
+.ft-col a:hover{color:var(--pu3)}
+.ft-bottom{border-top:1px solid rgba(168,85,247,.07);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ft-copy{font-size:.76rem;color:rgba(255,255,255,.18);font-family:var(--b)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;text-align:center;padding:110px 5% 60px;gap:40px}
+  .hero-sub{max-width:100%}
+  .hero-btns,.price-pills{justify-content:center}
+  .hero-right{order:-1}
+  .how-grid{grid-template-columns:1fr;gap:48px}
+  .ft-top{flex-direction:column;gap:32px}
+  .pcards{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  /* layout */
+  .hero{padding:90px 4% 50px;gap:36px}
+  .section{padding:60px 4%}
+  nav{padding:0 4%;height:58px}
+  nav .btn-ghost{display:none}
+
+  /* typography — make everything readable */
+  h1{font-size:clamp(1.9rem,8vw,2.6rem) !important;line-height:1.08 !important}
+  h2.sh{font-size:clamp(1.6rem,7vw,2.2rem) !important;line-height:1.1 !important}
+  .hero-sub{font-size:0.92rem !important;line-height:1.72 !important}
+  .ssub{font-size:0.92rem !important;line-height:1.72 !important}
+  p{font-size:0.9rem;line-height:1.7}
+
+  /* hero buttons */
+  .hero-btns,.cta-btns{flex-direction:column;align-items:center;gap:12px}
+  .btn-hero-p,.btn-hero-o{justify-content:center;width:100%;max-width:300px}
+
+  /* price pills */
+  .price-pills{flex-direction:column;align-items:center;gap:8px}
+  .price-pill{font-size:11px;padding:6px 14px}
+
+  /* problem cards */
+  .pcards{grid-template-columns:1fr;gap:14px}
+  .pcard{padding:22px 20px}
+  .pcard h3{font-size:0.95rem}
+  .pcard p{font-size:0.85rem}
+
+  /* features */
+  .feat{gap:14px}
+  .ftext h4{font-size:0.95rem}
+  .ftext p{font-size:0.85rem}
+
+  /* how section second phone */
+  .how-grid > div:last-child{display:none}
+
+  /* university pills */
+  .uni-pills{gap:8px}
+  .upill{font-size:11px;padding:7px 14px}
+
+  /* testimonials */
+  .testi-grid{grid-template-columns:1fr;gap:16px}
+  .tcard{padding:22px 20px}
+  .tcard blockquote{font-size:0.875rem;line-height:1.7}
+
+  /* stats */
+  .sgrid{grid-template-columns:repeat(2,1fr);gap:1px}
+  .snum{font-size:clamp(1.6rem,7vw,2.2rem)}
+  .slabel{font-size:11px}
+
+  /* CTA section */
+  .cta-sec{padding:70px 4%}
+  .cta-sec h2{font-size:clamp(1.8rem,7.5vw,2.4rem) !important}
+  .cta-sec p{font-size:0.92rem}
+
+  /* footer */
+  .ft-top{flex-direction:column;gap:28px}
+  .ft-col{display:none}
+  .ft-bottom{flex-direction:column;gap:8px;text-align:center}
+  .ft-copy{font-size:11px}
+  .ft-socials{gap:8px}
+  .soc{width:34px;height:34px}
+
+  /* hero badge */
+  .hero-badge{font-size:10px;padding:6px 14px}
+
+  /* lbl tag */
+  .lbl{font-size:9.5px}
+
+  /* nav logo */
+  .nav-logo img{height:34px}
+}
+@media(max-width:380px){
+  h1{font-size:1.75rem !important}
+  h2.sh{font-size:1.5rem !important}
+  .hero{padding:80px 4% 44px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="ChatGPT_Image_Apr_10__2026__12_03_51_AM-removebg-preview.png" alt="eLesson Africa"/>
+  </a>
+  <div class="nav-right">
+    <a href="app.html#signin" class="btn-ghost">Sign In</a>
+    <a href="app.html" class="btn-solid">Open App</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="position:relative;overflow:hidden">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-left">
+      <span class="hero-badge">
+        <span class="badge-dot"></span>
+        Topic-based learning for Nigerian students
+      </span>
+      <h1>Stop Reading.<br><em>Start Understanding.</em></h1>
+      <p class="hero-sub">
+        eLesson Africa breaks your university courses into clear, structured topics aligned to your school's exact curriculum.<br><br>
+        <strong>Read simplified notes. Pay only for what you need. Actually understand.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="#problem" class="btn-hero-o">Sound familiar?</a>
+        <a href="app.html" class="btn-hero-p">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Start Reading Free
+        </a>
+      </div>
+      <p class="hero-note">No credit card required &middot; Free topics available immediately</p>
+      <div class="price-pills">
+        <span class="price-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Access course outline for ₦200 only
+        </span>
+        <span class="price-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Unlock any topic for ₦200
+        </span>
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="hero-right">
+      <div class="phone-outer">
+        <div class="phone-glow"></div>
+        <div class="phone">
+          <div class="pscreen">
+
+            <!-- S1: Home -->
+            <div class="pslide active" id="sl0">
+              <div class="s1h">
+                <div class="s1top">
+                  <div>
+                    <div class="s1greet">Good afternoon,</div>
+                    <div class="s1name">Abayomi</div>
+                    <div class="s1uni">400 Level · Ladoke Akintola Uni. of Technology (LAUTECH)</div>
+                  </div>
+                  <div class="s1av">AJ</div>
+                </div>
+                <div class="s1search">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                  Search courses and topics...
+                </div>
+              </div>
+              <div class="s1body">
+                <div class="s1sec">Your Courses <span class="s1va">View all</span></div>
+                <div class="crow"><div class="cbadge">BCH<br>401</div><div><div class="cname">Enzymology</div><div class="cmeta">LAUTECH · 400 Level</div></div><span class="carr">›</span></div>
+                <div class="crow"><div class="cbadge">BCH<br>411</div><div><div class="cname">Laboratory Analysis</div><div class="cmeta">LAUTECH · 400 Level</div></div><span class="carr">›</span></div>
+                <div class="crow"><div class="cbadge">BCH<br>421</div><div><div class="cname">Molecular Biology</div><div class="cmeta">LAUTECH · 400 Level</div></div><span class="carr">›</span></div>
+              </div>
+            </div>
+
+            <!-- S2: Course Detail -->
+            <div class="pslide" id="sl1">
+              <div class="s2h">
+                <div class="s2back">‹ Course Detail</div>
+                <div class="s2badge">BCH<br>401</div>
+                <div class="s2title">Enzymology</div>
+                <div class="s2chips"><span class="chip">LAUTECH</span><span class="chip">Biochemistry</span><span class="chip">400 Level</span></div>
+                <div class="s2desc">Enzyme structure, kinetics and inhibition</div>
+              </div>
+              <div class="s2body">
+                <div class="s2buy"><div><div class="s2bt">Buy Full Course</div><div class="s2bs">2 paid topics · Unlock all</div></div><div class="s2price">₦400</div></div>
+                <div class="s2tt">Topics <span style="font-size:7.5px;color:#9333EA;font-weight:600">3 topics</span></div>
+                <div class="trow"><div class="tnum">1</div><div class="tname">Enzymes Defined</div><span class="tbuy">₦200</span></div>
+                <div class="trow"><div class="tnum">2</div><div class="tname">Enzymes Terminologies</div><span class="tbuy">₦200</span></div>
+                <div class="trow"><div class="tnum">3</div><div class="tname">Enzymes Intro</div><span class="tfree">Free</span></div>
+              </div>
+            </div>
+
+            <!-- S3: Topic Reader -->
+            <div class="pslide" id="sl2">
+              <div class="s3h">
+                <span class="s3back">‹</span>
+                <span class="s3title">Enzymes Defined — BCH 401</span>
+              </div>
+              <div class="s3body">
+                <div class="s3topic">Enzymes Defined</div>
+                <div class="s3chips"><span class="s3chip">BCH 401</span><span class="s3chip">Topic 1</span><span class="s3chip">Free</span></div>
+                <div class="s3card">
+                  <div class="s3sh">What is an Enzyme?</div>
+                  <div class="line" style="width:100%"></div>
+                  <div class="line" style="width:100%"></div>
+                  <div class="line" style="width:75%"></div>
+                  <div class="line" style="width:100%;margin-top:5px"></div>
+                  <div class="line" style="width:60%"></div>
+                </div>
+                <div class="s3card">
+                  <div class="s3sh">Key Characteristics</div>
+                  <div class="line" style="width:100%"></div>
+                  <div class="line" style="width:80%"></div>
+                </div>
+                <div class="s3pdf">
+                  <div class="s3pdficon">PDF</div>
+                  <div><div class="s3pdfname">Lab Techniques Handbook</div><div class="s3pdfmeta">Clinical Laboratory · 135 pages</div></div>
+                  <span class="s3open">Open</span>
+                </div>
+              </div>
+              <div class="s3nav">
+                <div class="s3ni"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
+                <div class="s3ni on"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Courses</div>
+                <div class="s3ni"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Search</div>
+                <div class="s3ni"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</div>
+              </div>
+            </div>
+
+            <!-- S4: Splash -->
+            <div class="pslide" id="sl3">
+              <div class="s4wrap">
+                <img src="ChatGPT_Image_Apr_10__2026__12_03_51_AM-removebg-preview.png" class="s4logo" alt="eLesson Africa"/>
+                <p class="s4tag">The right lesson, for your school,<br>your department, your course.</p>
+                <div class="s4p">Create Account</div>
+                <div class="s4o">Sign In</div>
+                <div class="s4foot">Built for African university students</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="pdots">
+          <div class="pdot on" data-i="0"></div>
+          <div class="pdot" data-i="1"></div>
+          <div class="pdot" data-i="2"></div>
+          <div class="pdot" data-i="3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section class="section problem-sec" id="problem">
+  <div class="sw">
+    <span class="lbl reveal">The problem</span>
+    <h2 class="sh reveal">You read for hours.<br><em>Nothing sticks.</em></h2>
+    <p class="ssub reveal">Nigerian university students are not lazy. The content they are given just does not help them understand.</p>
+    <div class="pcards reveal">
+      <div class="pcard">
+        <div class="pcard-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        </div>
+        <h3>"I read but I don't understand"</h3>
+        <p>Textbooks use complex language that takes longer to decode than it does to actually learn the concept.</p>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>"My lecturer explains too fast"</h3>
+        <p>A one-hour lecture covers 3 weeks of material. By the time you blink, you have lost the thread.</p>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <h3>"Handouts are confusing"</h3>
+        <p>Photocopied notes, unclear diagrams, missing context. The material exists, but it does not explain itself.</p>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+        </div>
+        <h3>"I cram the night before"</h3>
+        <p>Cramming gives a pass. Understanding gives a First Class. Most students never had the tools to do the latter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section how-sec">
+  <div class="sw how-grid">
+    <div>
+      <span class="lbl reveal">What we built</span>
+      <h2 class="sh reveal">The right lesson,<br>for your exact course.</h2>
+      <div class="feats">
+        <div class="feat reveal">
+          <div class="ficon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="ftext"><h4>Course-matched content</h4><p>Every topic mapped to your university, department, and course code. BCH 401 at LAUTECH is not the same anywhere else.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="ficon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg></div>
+          <div class="ftext"><h4>Structured notes + PDF materials</h4><p>Simplified lesson notes, PDF resources, and referenced materials — all inside one clean app, nothing scattered.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="ficon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="ftext"><h4>Priced for Nigerian students</h4><p>Start free. Unlock individual topics from ₦200 or full courses from ₦400 — prices built for your reality.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="ficon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+          <div class="ftext"><h4>Built school by school</h4><p>Expanding university by university across Nigeria. Your school is here or on its way.</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- second phone instance in this section -->
+    <div style="display:flex;justify-content:center;align-items:center;position:relative">
+      <div style="position:absolute;inset:-60px;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(124,58,237,.12) 0%,transparent 65%);pointer-events:none"></div>
+      <div style="width:240px;background:linear-gradient(170deg,#2E1A6E,#120929);border-radius:44px;padding:11px;box-shadow:0 40px 80px rgba(0,0,0,.65),0 0 0 1px rgba(168,85,247,.18),inset 0 1px 0 rgba(255,255,255,.08);position:relative;z-index:1;animation:phoneFloat 6s 1.5s ease-in-out infinite">
+        <div style="position:absolute;top:19px;left:50%;transform:translateX(-50%);width:58px;height:5px;background:rgba(0,0,0,.65);border-radius:3px;z-index:10"></div>
+        <div style="background:#F5F0FF;border-radius:32px;overflow:hidden;height:420px;display:flex;flex-direction:column">
+          <!-- reader view -->
+          <div style="background:#fff;padding:9px 11px 8px;border-bottom:1px solid #EDE9FE;display:flex;align-items:center;gap:6px">
+            <span style="color:#7C3AED;font-size:10px;font-weight:700;font-family:var(--f)">‹</span>
+            <span style="font-family:var(--f);font-size:8.5px;font-weight:700;color:#1E1B4B;flex:1">Enzymes Defined — BCH 401</span>
+          </div>
+          <div style="flex:1;background:#F5F0FF;padding:10px 11px;display:flex;flex-direction:column;gap:6px;overflow:hidden">
+            <div style="font-family:var(--f);font-size:9.5px;font-weight:800;color:#1E1B4B">Enzymes Defined</div>
+            <div style="display:flex;gap:3px">
+              <span style="font-size:6px;font-family:var(--b);background:#EDE9FE;color:#7C3AED;padding:2px 5px;border-radius:999px">BCH 401</span>
+              <span style="font-size:6px;font-family:var(--b);background:#EDE9FE;color:#7C3AED;padding:2px 5px;border-radius:999px">Topic 1</span>
+              <span style="font-size:6px;font-family:var(--b);background:#D1FAE5;color:#059669;padding:2px 5px;border-radius:999px">Free</span>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:8px 9px;box-shadow:0 1px 4px rgba(107,33,168,.06)">
+              <div style="font-family:var(--f);font-size:7.5px;font-weight:700;color:#1E1B4B;margin-bottom:4px">What is an Enzyme?</div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px;width:100%"></div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px;width:90%"></div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px;width:70%"></div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px;width:100%;margin-top:6px"></div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;width:55%"></div>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:8px 9px;box-shadow:0 1px 4px rgba(107,33,168,.06)">
+              <div style="font-family:var(--f);font-size:7.5px;font-weight:700;color:#1E1B4B;margin-bottom:4px">Key Characteristics</div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;margin-bottom:3px;width:100%"></div>
+              <div style="height:4px;border-radius:3px;background:#EDE9FE;width:75%"></div>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:7px 9px;display:flex;align-items:center;gap:6px;box-shadow:0 1px 4px rgba(107,33,168,.06)">
+              <div style="width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#EF4444,#DC2626);display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:6px;font-weight:700;color:#fff;flex-shrink:0">PDF</div>
+              <div style="flex:1"><div style="font-family:var(--f);font-size:7.5px;font-weight:600;color:#1E1B4B">Lab Techniques Handbook</div><div style="font-size:6.5px;color:#9CA3AF;margin-top:1px">135 pages</div></div>
+              <span style="font-family:var(--f);font-size:6px;font-weight:700;color:#7C3AED;background:#EDE9FE;padding:2px 6px;border-radius:999px">Open</span>
+            </div>
+          </div>
+          <div style="background:#fff;padding:6px 12px;display:flex;justify-content:space-around;border-top:1px solid #EDE9FE">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--b);font-size:6px;color:#9CA3AF">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--b);font-size:6px;color:#7C3AED">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Courses
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--b);font-size:6px;color:#9CA3AF">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Search
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--b);font-size:6px;color:#9CA3AF">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── UNIVERSITIES ── -->
+<section class="section uni-sec">
+  <div class="sw">
+    <span class="lbl reveal">Universities we cover</span>
+    <h2 class="sh reveal">Is your school in?</h2>
+    <p class="ssub reveal">We cover major Nigerian universities and are adding more every month.</p>
+    <div class="uni-pills reveal">
+      <span class="upill">University of Ibadan</span>
+      <span class="upill">Obafemi Awolowo University</span>
+      <span class="upill">University of Lagos</span>
+      <span class="upill">LAUTECH</span>
+      <span class="upill">University of Benin</span>
+      <span class="upill">Ahmadu Bello University</span>
+      <span class="upill">UNILORIN</span>
+      <span class="upill">University of Ilorin</span>
+      <span class="upill more">And more →</span>
+    </div>
+    <p class="uni-note reveal">Don't see yours? Sign up anyway. New schools are added based on demand.</p>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section testi-sec">
+  <div class="sw">
+    <div class="testi-head">
+      <span class="lbl reveal">Student reviews</span>
+      <h2 class="sh reveal" style="text-align:center;max-width:500px;margin:0 auto">They understood.<br><em>Then they passed.</em></h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="tcard">
+        <div class="stars">
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>"I finally understand Biochemistry. The notes don't talk down to you — they just explain things clearly. I read one topic and it clicked in a way three weeks of lectures didn't."</blockquote>
+        <div class="tauthor">
+          <div class="tavatar">TK</div>
+          <div><div class="tname">Tunde Kehinde</div><div class="tmeta">100L, Medicine — University of Ibadan</div></div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>"₦200 per topic is so fair. I was struggling with two courses and I just unlocked the specific topics I needed. Passed both. I'll be back next semester."</blockquote>
+        <div class="tauthor">
+          <div class="tavatar">AA</div>
+          <div><div class="tname">Adaeze Anieke</div><div class="tmeta">200L, Engineering — LAUTECH</div></div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>"The free topics alone changed how I approach studying. I didn't even have to pay to get value. When I unlocked the rest, I could feel the difference in my exam answers."</blockquote>
+        <div class="tauthor">
+          <div class="tavatar">OB</div>
+          <div><div class="tname">Oluwaseun Babatunde</div><div class="tmeta">300L, Pharmacy — University of Ibadan</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-sec">
+  <div class="sgrid reveal">
+    <div class="scard"><div class="snum">400+</div><div class="slabel">Topics available</div></div>
+    <div class="scard"><div class="snum">8+</div><div class="slabel">Universities covered</div></div>
+    <div class="scard"><div class="snum">₦200</div><div class="slabel">Topics from just</div></div>
+    <div class="scard"><div class="snum">5★</div><div class="slabel">Student rating</div></div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta-sec">
+  <h2 class="reveal">Stop cramming.<br><span style="background:linear-gradient(135deg,var(--pu3),var(--pk2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Start understanding.</span></h2>
+  <p class="reveal">Sign up in seconds. Pick your school, your department, your level. Start reading today.</p>
+  <div class="cta-btns reveal">
+    <a href="app.html" class="btn-hero-p">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      Create Free Account
+    </a>
+    <a href="app.html#signin" class="btn-hero-o">I already have an account</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div>
+        <img src="ChatGPT_Image_Apr_10__2026__12_03_51_AM-removebg-preview.png" class="ft-brand" alt="eLesson Africa" style="height:42px;filter:drop-shadow(0 0 10px rgba(192,38,211,.38));display:block;margin-bottom:10px"/>
+        <p class="ft-tagline">The right lesson, for your school, your department, your course.</p>
+        <div class="ft-socials">
+          <a href="https://twitter.com/elessonafrica" target="_blank" class="soc" title="Twitter / X">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://instagram.com/elessonafrica" target="_blank" class="soc" title="Instagram">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://facebook.com/elessonafrica" target="_blank" class="soc" title="Facebook">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://linkedin.com/company/elessonafrica" target="_blank" class="soc" title="LinkedIn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://youtube.com/@elessonafrica" target="_blank" class="soc" title="YouTube">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h5>Product</h5>
+        <a href="app.html">Open App</a>
+        <a href="app.html">Create Account</a>
+        <a href="app.html#signin">Sign In</a>
+      </div>
+      <div class="ft-col">
+        <h5>Connect</h5>
+        <a href="https://twitter.com/elessonafrica" target="_blank">Twitter / X</a>
+        <a href="https://instagram.com/elessonafrica" target="_blank">Instagram</a>
+        <a href="https://facebook.com/elessonafrica" target="_blank">Facebook</a>
+        <a href="https://linkedin.com/company/elessonafrica" target="_blank">LinkedIn</a>
+        <a href="https://youtube.com/@elessonafrica" target="_blank">YouTube</a>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2026 eLesson Africa. All rights reserved.</span>
+      <span class="ft-copy">Built for African university students</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Phone carousel
+const slides=document.querySelectorAll('.pslide');
+const dots=document.querySelectorAll('.pdot');
+let cur=0,timer;
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dots[cur].classList.remove('on');
+  cur=n%slides.length;
+  slides[cur].classList.add('active');
+  dots[cur].classList.add('on');
+}
+timer=setInterval(()=>goTo(cur+1),3000);
+dots.forEach(d=>d.addEventListener('click',()=>{
+  clearInterval(timer);
+  goTo(+d.dataset.i);
+  timer=setInterval(()=>goTo(cur+1),3000);
+}));
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
